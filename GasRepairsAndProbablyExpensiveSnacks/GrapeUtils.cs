@@ -80,13 +80,19 @@ namespace GasRepairsAndProbablyExpensiveSnacks
         public List<double> BaseRates()
         {
             List<double> baseList = new List<double>();
-            string pathToData = KSPUtil.ApplicationRootPath + "/GameData/FruitKocktail/GRAPES/PluginData/baserates.txt";
-            List<string> baseGrabList = new List<string>(File.ReadAllLines(pathToData));
-
-            foreach (var entry in baseGrabList)
+            double[] allPrices =
             {
-                baseList.Add(double.Parse(entry));
-            }
+                0.98,       //lfo
+                0.8,        //lf
+                0.18,       //o
+                1.2,        //mp
+                4.0,        //xen
+                0.1,        // bat
+                300.0       // rep
+            };
+
+            baseList.AddRange(allPrices);
+
 
             return baseList;
 

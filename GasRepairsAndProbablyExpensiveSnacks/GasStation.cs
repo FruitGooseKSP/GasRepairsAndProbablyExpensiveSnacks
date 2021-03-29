@@ -279,6 +279,15 @@ namespace GasRepairsAndProbablyExpensiveSnacks
         public List<double> basePrices;
         public List<Part> listOfCards;
         public Part activeCard;
+        private static double lfoCost2;
+        private static double lfCost2;
+        private static double oCost2;
+        private static double mCost2;
+        private static double xCost2;
+        private static double batCost2;
+        private static double repCost2;
+
+        public static GasStation Instance;
 
         public bool CheckCredit()
         {
@@ -605,6 +614,9 @@ namespace GasRepairsAndProbablyExpensiveSnacks
             }
             else if (HighLogic.LoadedSceneIsFlight)
             {
+                Instance = this;
+
+
                 try
                 {
                     basePrices = new List<double>();
@@ -672,6 +684,36 @@ namespace GasRepairsAndProbablyExpensiveSnacks
         }
 
 
+        public static List<double> ProvidePrices()
+        {
+            List<double> sendList = new List<double>();
+
+            lfoCost2 = Instance.lfoCost;
+            lfCost2 = Instance.lfCost;
+            oCost2 = Instance.oCost;
+            mCost2 = Instance.mCost;
+            xCost2 = Instance.xCost;
+            batCost2 = Instance.batCost;
+            repCost2 = Instance.repCost;
+
+
+            double[] allOfThem =
+            {
+                lfoCost2,
+                lfCost2,
+                oCost2,
+                mCost2,
+                xCost2,
+                batCost2,
+                repCost2
+            };
+
+            sendList.AddRange(allOfThem);
+
+            return sendList;
+        }
+
+
 
 
 
@@ -680,4 +722,3 @@ namespace GasRepairsAndProbablyExpensiveSnacks
 }
 // ToDo 
 // Part payment / refuel if insuffient to fill up
-// better GUI?
