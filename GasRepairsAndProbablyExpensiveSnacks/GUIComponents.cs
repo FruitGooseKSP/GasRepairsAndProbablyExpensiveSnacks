@@ -12,7 +12,8 @@ namespace GasRepairsAndProbablyExpensiveSnacks
     [KSPAddon(KSPAddon.Startup.Flight, false)]
     public class GUIComponents : MonoBehaviour
     {
-        public Texture grapesTexture;
+        public Texture grapesTextureOff;
+        public Texture grapesTextureOn;
 
         public static ApplicationLauncherButton grapesBtn;
 
@@ -21,16 +22,20 @@ namespace GasRepairsAndProbablyExpensiveSnacks
 
         // does the button exist?
         public bool btnIsPresent = false;
+        public static string statusStringToReturn = "";
+        public static int code;
 
+        private static bool canRefuel;
+        private static bool canRecharge;
         public static bool closeBtn;
         public static bool refuelBtn;
         public static bool rechargeBtn;
         public static bool repairBtn;
 
-        private Vector2 menuPR = new Vector2((Screen.width / 2) - 150, (Screen.height / 2) - 237);
+        private Vector2 menuPR = new Vector2((Screen.width / 2) - 200, (Screen.height / 2) - 237);
 
         // menu size reference
-        private Vector2 menuSR = new Vector2(300, 474);
+        private Vector2 menuSR = new Vector2(400, 474);
 
         // the menu position holder
         private static Rect guiPos;
@@ -40,6 +45,11 @@ namespace GasRepairsAndProbablyExpensiveSnacks
 
         public void Awake()
         {
+            if (grapesBtn != null)
+            {
+                onDisable();
+
+            }
             // register game events
             if (HighLogic.LoadedSceneIsFlight && grapesBtn == null)
             {
@@ -61,12 +71,19 @@ namespace GasRepairsAndProbablyExpensiveSnacks
         {
             // add the button
 
-            if (!btnIsPresent)
+            if (!btnIsPresent && HighLogic.LoadedSceneIsFlight)
             {
                 grapesBtn = ApplicationLauncher.Instance.AddModApplication(onTrue, onFalse, onHover, onHoverOut, onEnable, onDisable,
-                    ApplicationLauncher.AppScenes.FLIGHT, grapesTexture);
+                    ApplicationLauncher.AppScenes.FLIGHT, grapesTextureOff);
 
                 btnIsPresent = true;
+            }
+
+            if (!HighLogic.LoadedSceneIsFlight)
+            {
+                RemoveButton(GameScenes.EDITOR);
+                RemoveButton(GameScenes.SPACECENTER);
+
             }
         }
 
@@ -102,7 +119,7 @@ namespace GasRepairsAndProbablyExpensiveSnacks
             GUILayout.BeginVertical();
             GUILayout.Space(20);
 
-            GUILayout.BeginArea(new Rect(20, 40, 220, 220));
+            GUILayout.BeginArea(new Rect(20, 40, 360, 220));
             GUILayout.BeginHorizontal();
 
             GUILayout.Space(20);
@@ -151,7 +168,7 @@ namespace GasRepairsAndProbablyExpensiveSnacks
             GUILayout.EndArea();
 
 
-            GUILayout.BeginArea(new Rect(20, 250, 220, 100));
+            GUILayout.BeginArea(new Rect(20, 250, 360, 100));
 
 
             GUILayout.BeginHorizontal();
@@ -171,7 +188,7 @@ namespace GasRepairsAndProbablyExpensiveSnacks
             GUILayout.BeginHorizontal();
 
             GUILayout.Space(20);
-            GUILayout.Label("Station Status = " + GetStatus(), new GUIStyle(HighLogic.Skin.label));
+            GUILayout.Label("Station Status = " + LabelStatus(), new GUIStyle(HighLogic.Skin.label));
             GUILayout.Space(20);
             GUILayout.EndHorizontal();
 
@@ -181,25 +198,25 @@ namespace GasRepairsAndProbablyExpensiveSnacks
 
             GUILayout.BeginHorizontal();
 
-            refuelBtn = GUI.Button(new Rect(40, 350, 220, 25), "Request Fuel", new GUIStyle(HighLogic.Skin.button));
+            refuelBtn = GUI.Button(new Rect(40, 350, 320, 25), "Request Fuel", new GUIStyle(HighLogic.Skin.button));
 
             GUILayout.EndHorizontal();
             
             GUILayout.BeginHorizontal();
 
-            rechargeBtn = GUI.Button(new Rect(40, 375, 220, 25), "Request Recharge", new GUIStyle(HighLogic.Skin.button));
+            rechargeBtn = GUI.Button(new Rect(40, 375, 320, 25), "Request Recharge", new GUIStyle(HighLogic.Skin.button));
 
             GUILayout.EndHorizontal();
             
             GUILayout.BeginHorizontal();
 
-            repairBtn = GUI.Button(new Rect(40, 400, 220, 25), "Request Repair", new GUIStyle(HighLogic.Skin.button));
+            repairBtn = GUI.Button(new Rect(40, 400, 320, 25), "Request Repair", new GUIStyle(HighLogic.Skin.button));
 
             GUILayout.EndHorizontal();
             
             GUILayout.BeginHorizontal();
 
-            closeBtn = GUI.Button(new Rect(40, 425, 220, 25), "Cancel/Close", new GUIStyle(HighLogic.Skin.button));
+            closeBtn = GUI.Button(new Rect(40, 425, 320, 25), "Cancel/Close", new GUIStyle(HighLogic.Skin.button));
 
             GUILayout.EndHorizontal();
             
@@ -228,7 +245,8 @@ namespace GasRepairsAndProbablyExpensiveSnacks
             if (HighLogic.LoadedSceneIsFlight)
             {
 
-                grapesTexture = GameDatabase.Instance.GetTexture("FruitKocktail/GRAPES/Icons/grapes", false);
+                grapesTextureOff = GameDatabase.Instance.GetTexture("FruitKocktail/GRAPES/Icons/grapesoff", false);
+                grapesTextureOn = GameDatabase.Instance.GetTexture("FruitKocktail/GRAPES/Icons/grapeson", false);
                 guiPos = new Rect(menuPR, menuSR);
                 rates = GasStation.ProvidePrices();
 
@@ -255,6 +273,25 @@ namespace GasRepairsAndProbablyExpensiveSnacks
                     CloseMenu();
                     closeBtn = false;
                 }
+
+                if (refuelBtn)
+                {
+                    TryRefuel();
+                    refuelBtn = false;
+                }
+
+                if (rechargeBtn)
+                {
+                    TryRecharge();
+                    rechargeBtn = false;
+                }
+
+
+            }
+
+            else if (!HighLogic.LoadedSceneIsFlight)
+            {
+                onDisable();
             }
         }
 
@@ -273,6 +310,7 @@ namespace GasRepairsAndProbablyExpensiveSnacks
         public void onTrue()
         {
             // ie when clicked on
+            grapesBtn.SetTexture(grapesTextureOn);
             btnIsPressed = true;
 
         }
@@ -280,6 +318,7 @@ namespace GasRepairsAndProbablyExpensiveSnacks
         public void onFalse()
         {
             // ie when clicked off
+            grapesBtn.SetTexture(grapesTextureOff);
             btnIsPressed = false;
         }
 
@@ -310,24 +349,27 @@ namespace GasRepairsAndProbablyExpensiveSnacks
             GameEvents.onGUIApplicationLauncherReady.Remove(AddButton);
             GameEvents.onGUIApplicationLauncherUnreadifying.Remove(RemoveButton);
             ApplicationLauncher.Instance.RemoveModApplication(grapesBtn);
+            grapesBtn = null;
 
         }
 
 
         private static string GetFillUpCost()
         {
-            string stringToReturn;
+            
             double grabbedPrice = GasStation.GetFuelAmount();
 
             if (grabbedPrice == 0)
             {
+                canRefuel = false;
                 return "All Tanks Full!";
                 
             }
 
             else
             {
-                stringToReturn = grabbedPrice.ToString("0.00");
+                canRefuel = true;
+                string stringToReturn = grabbedPrice.ToString("0.00");
                 return stringToReturn;
             }
 
@@ -335,31 +377,49 @@ namespace GasRepairsAndProbablyExpensiveSnacks
 
         private static string GetCredit()
         {
-            string stringToReturn;
+            
             double creditAmount = GasStation.GetCreditAmount();
 
             if (creditAmount == 0)
             {
+                canRecharge = false;
+                canRefuel = false;
                 return "All Cards Are Empty!";
             }
 
             else
             {
-                stringToReturn = creditAmount.ToString("0.00");
+                canRecharge = true;
+                canRefuel = true;
+                string stringToReturn = creditAmount.ToString("0.00");
                 return stringToReturn;
             }
 
         }
 
-        private static string GetStatus()
+        private static string LabelStatus()
         {
-            string stringToReturn = GasStation.GetStatus();
+            if (statusStringToReturn == "")
+            {
+                return "Awaiting Your Order";
+            }
+            else
+            {
+                string toReturn = statusStringToReturn;
+                statusStringToReturn = "";
+                return toReturn;
+            }
+        }
+
+        private static string GetStatus(int _code)
+        {
+            string stringToReturn = GasStation.GetStatus(_code);
             return stringToReturn;
         }
 
         private static string GetRechargeAbility()
         {
-            bool canRecharge = GasStation.QueryRecharge();
+            canRecharge = GasStation.QueryRecharge();
 
             if (canRecharge)
             {
@@ -378,6 +438,41 @@ namespace GasRepairsAndProbablyExpensiveSnacks
 
             return "N/A";
 
+        }
+
+        private static void TryRecharge()
+        {
+            if (canRecharge)
+            {
+                code = GasStation.Recharge();
+
+                if (code == 4)
+                {
+                    statusStringToReturn = "Batteries recharged, come again soon!";
+                    LabelStatus();
+                }
+                 
+            }
+
+        }
+
+        private static void TryRefuel()
+        {
+            if (canRefuel)
+            {
+                code = GasStation.Refuel();
+                
+                if (code == 1)
+                {
+                    statusStringToReturn = "All tanks now full, come again soon!";
+                }
+                else if (code == 2)
+                {
+                    statusStringToReturn = "Part refill complete, come again soon!";
+                }
+
+                LabelStatus();
+            }
         }
 
 
