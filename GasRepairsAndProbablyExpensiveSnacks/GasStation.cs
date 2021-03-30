@@ -288,6 +288,8 @@ namespace GasRepairsAndProbablyExpensiveSnacks
         private static double repCost2;
 
         public static GasStation Instance;
+        public bool isWaitingForDelivery;
+        public string timeTillDelivery;
 
         public bool CheckCredit()
         {
@@ -426,12 +428,12 @@ namespace GasRepairsAndProbablyExpensiveSnacks
                 totalPrice = 1;
             }
 
-            strStatus = "Please confirm purchase at the above price to continue";
+         /*   strStatus = "Please confirm purchase at the above price to continue";
             Events["FillHerUp"].guiName = "Press To Commit To Purchase";
             fuelStatus = 1;
             Events["CancelOrder"].active = true;
             Events["RequestRecharge"].active = false;
-            Events["RequestRepair"].active = false;    
+            Events["RequestRepair"].active = false;    */
         }
 
         public void RepairProcedure()
@@ -548,7 +550,7 @@ namespace GasRepairsAndProbablyExpensiveSnacks
         public bool TestAttachmentFuel()
         {
             bool toReturn = false;
-            cardCheck = CardCheck();
+            cardCheck = true;
 
             if (cardCheck)
             {
@@ -683,6 +685,142 @@ namespace GasRepairsAndProbablyExpensiveSnacks
             }
         }
 
+        public static double GetFuelAmount()
+        {
+            Instance.lfDif = 0;
+            Instance.oDif = 0;
+            Instance.mDif = 0;
+            Instance.xDif = 0;
+
+            foreach (var part in FlightGlobals.ActiveVessel.Parts)
+            {
+                if (part.Resources.Contains("LiquidFuel"))
+                {
+                    if (part.Resources.Get("LiquidFuel").amount < part.Resources.Get("LiquidFuel").maxAmount)
+                    {
+                        Instance.lfDif += part.Resources.Get("LiquidFuel").maxAmount - part.Resources.Get("LiquidFuel").amount;
+                    }
+                }
+
+                if (part.Resources.Contains("Oxidizer"))
+                {
+                    if (part.Resources.Get("Oxidizer").amount < part.Resources.Get("Oxidizer").maxAmount)
+                    {
+                        Instance.oDif += part.Resources.Get("Oxidizer").maxAmount - part.Resources.Get("Oxidizer").amount;
+                    }
+                }
+
+                if (part.Resources.Contains("MonoPropellant"))
+                {
+                    if (part.Resources.Get("MonoPropellant").amount < part.Resources.Get("MonoPropellant").maxAmount)
+                    {
+                        Instance.mDif += part.Resources.Get("MonoPropellant").maxAmount - part.Resources.Get("MonoPropellant").amount;
+                    }
+                }
+
+                if (part.Resources.Contains("XenonGas"))
+                {
+                    if (part.Resources.Get("XenonGas").amount < part.Resources.Get("XenonGas").maxAmount)
+                    {
+                        Instance.xDif += part.Resources.Get("XenonGas").maxAmount - part.Resources.Get("XenonGas").amount;
+                    }
+                }
+
+            }
+
+            if (Instance.lfDif > 0 || Instance.oDif > 0 || Instance.mDif > 0 || Instance.xDif > 0)
+            {
+                Instance.runningFuel = 0;
+                Instance.runningFuel = (Instance.lfDif * Instance.lfCost) + (Instance.oDif * Instance.oCost) +
+                    (Instance.mDif * Instance.mCost) + (Instance.xDif * Instance.xCost);
+                Instance.totalPrice = Math.Round(Instance.runningFuel, 0);
+
+                if (Instance.totalPrice < 1)
+                {
+                    Instance.totalPrice = 1;
+                }
+
+                return Instance.totalPrice;
+            }
+
+            else return 0;
+
+        }
+
+        public static double GetCreditAmount()
+        {
+            List<Part> cardList = new List<Part>();
+            double totalCredit = 0;
+
+            foreach (var part in FlightGlobals.ActiveVessel.Parts)
+            {
+                if (part.HasModuleImplementing<FuelCard>())
+                {
+                    cardList.Add(part);
+                }
+            }
+
+            if (cardList.Count == 0)
+            {
+                return 0;
+            }
+            else
+            {
+                for (int x = 0; x < cardList.Count; x++)
+                {
+                    if (cardList[x].GetComponent<FuelCard>().availableCredit > 0)
+                    {
+                        totalCredit += cardList[x].GetComponent<FuelCard>().availableCredit;
+                    }
+                }
+
+                if (totalCredit == 0)
+                {
+                    return 0;
+                }
+                else return totalCredit;
+            }
+
+        }
+
+        public static string GetStatus()
+        {
+            if (Instance.isWaitingForDelivery)
+            {
+                return Instance.timeTillDelivery;
+            }
+            else
+            {
+                return "Awaiting Your Order";
+            }
+
+        }
+
+        public static bool QueryRecharge()
+        {
+            double batDif = 0;
+
+            foreach (var part in FlightGlobals.ActiveVessel.Parts)
+            {
+                if (part.Resources.Contains("ElectricCharge"))
+                {
+                    if (part.Resources.Get("ElectricCharge").amount < part.Resources.Get("ElectricCharge").maxAmount)
+                    {
+                        batDif += part.Resources.Get("ElectricCharge").maxAmount - part.Resources.Get("ElectricCharge").amount;
+                    }
+                }
+            }
+
+            if (batDif > 0)
+            {
+                return true;
+            }
+
+            else return false;
+
+
+
+        }
 
         public static List<double> ProvidePrices()
         {

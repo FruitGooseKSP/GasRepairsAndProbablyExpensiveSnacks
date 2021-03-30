@@ -87,7 +87,7 @@ namespace GasRepairsAndProbablyExpensiveSnacks
                 0.18,       //o
                 1.2,        //mp
                 4.0,        //xen
-                0.1,        // bat
+                100.0,        // bat
                 300.0       // rep
             };
 
