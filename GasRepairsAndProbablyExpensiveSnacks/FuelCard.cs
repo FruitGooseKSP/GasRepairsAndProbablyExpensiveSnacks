@@ -10,23 +10,5 @@
         public double availableCredit = 1000;
 
 
-
-        public void Start()
-        {
-            
-        }
-
-        public void Update() { 
-        
-        
-        
-        }
-
-
-
-
-
-
-
     }
 }

@@ -82,6 +82,8 @@ namespace GasRepairsAndProbablyExpensiveSnacks
         {
             if (HighLogic.LoadedSceneIsFlight)
             {
+                // refreshes prices if station moves to another area
+
                 CelestialBody loc = FlightGlobals.ActiveVessel.mainBody;
                
                 if (loc != currentOrbit)
@@ -206,7 +208,7 @@ namespace GasRepairsAndProbablyExpensiveSnacks
 
         }
 
-        public static string GetStatus(int _code)
+  /*      public static string GetStatus(int _code)
         {
             if (_code == 0)
             {
@@ -246,7 +248,7 @@ namespace GasRepairsAndProbablyExpensiveSnacks
             else return "There has been a problem processing your order. Please contact your card provider.";
 
         }
-
+  */
         public static bool QueryRecharge()
         {
             double batDif = 0;
@@ -271,8 +273,6 @@ namespace GasRepairsAndProbablyExpensiveSnacks
 
             else return false;
 
-
-
         }
 
         public static List<double> ProvidePrices()
@@ -286,7 +286,6 @@ namespace GasRepairsAndProbablyExpensiveSnacks
             xCost2 = Instance.xCost;
             batCost2 = Instance.batCost;
             repCost2 = Instance.repCost;
-
 
             double[] allOfThem =
             {
@@ -373,13 +372,7 @@ namespace GasRepairsAndProbablyExpensiveSnacks
                 TimerEvent();
                 return 2;
 
-
-
             }
-
-
-
-
 
         }
 
@@ -430,8 +423,7 @@ namespace GasRepairsAndProbablyExpensiveSnacks
 
             else
             {
-                double runningType = typeToTake;
-
+                
                 foreach (var part in FlightGlobals.ActiveVessel.Parts)
                 {
                     if (part.HasModuleImplementing<FuelCard>())
@@ -450,24 +442,16 @@ namespace GasRepairsAndProbablyExpensiveSnacks
                 }
 
 
-
             }
 
 
 
         }
 
+        // not currently implemented
         public static void TimerEvent()
         {
-            
-
-            
-
-
-
-
         }
-
 
     }
 }
