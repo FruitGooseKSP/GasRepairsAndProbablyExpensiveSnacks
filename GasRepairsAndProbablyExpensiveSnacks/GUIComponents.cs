@@ -72,6 +72,11 @@ namespace GasRepairsAndProbablyExpensiveSnacks
 
             if (HighLogic.LoadedSceneIsFlight)
             {
+                if (grapesBtn != null)
+                {
+                    onDestroy();
+                    grapesBtn = null;
+                }
 
                 grapesTextureOff = GameDatabase.Instance.GetTexture("FruitKocktail/GRAPES/Icons/grapesoff", false);
                 grapesTextureOn = GameDatabase.Instance.GetTexture("FruitKocktail/GRAPES/Icons/grapeson", false);
@@ -306,6 +311,7 @@ namespace GasRepairsAndProbablyExpensiveSnacks
         {
             // when destroyed
             ApplicationLauncher.Instance.RemoveModApplication(grapesBtn);
+            grapesBtn = null;
         }
 
         // gets cost to fill up in current context
