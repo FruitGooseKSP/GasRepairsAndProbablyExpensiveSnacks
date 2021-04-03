@@ -266,7 +266,7 @@ namespace GasRepairsAndProbablyExpensiveSnacks
 
             Instance.batDif = batDif;
 
-            if (batDif > 0)
+            if (batDif > 1)
             {
                 return true;
             }

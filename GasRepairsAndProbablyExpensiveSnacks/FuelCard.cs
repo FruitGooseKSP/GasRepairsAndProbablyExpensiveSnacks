@@ -1,4 +1,11 @@
-﻿namespace GasRepairsAndProbablyExpensiveSnacks
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using UnityEngine;
+
+namespace GasRepairsAndProbablyExpensiveSnacks
 {
     public class FuelCard : PartModule
     {
