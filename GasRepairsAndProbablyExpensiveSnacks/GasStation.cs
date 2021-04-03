@@ -29,7 +29,6 @@ namespace GasRepairsAndProbablyExpensiveSnacks
         public double runningFuel;
         public double creditAmount = 0;
         public List<double> basePrices;
-        public string timeTillDelivery;
         private static double lfoCost2;
         private static double lfCost2;
         private static double oCost2;
@@ -38,6 +37,12 @@ namespace GasRepairsAndProbablyExpensiveSnacks
         private static double batCost2;
         private static double repCost2;
         public static GasStation Instance;
+
+        [KSPField(isPersistant = true)]
+        public double timeTillNextDel;
+
+        [KSPField(isPersistant = true)]
+        public double timerEnd;
 
 
         public void Start()
@@ -106,6 +111,7 @@ namespace GasRepairsAndProbablyExpensiveSnacks
             }
         }
 
+        // calculates how much fuel the player 'needs'
         public static double GetFuelAmount()
         {
             Instance.lfDif = 0;
@@ -168,6 +174,7 @@ namespace GasRepairsAndProbablyExpensiveSnacks
 
         }
 
+        // get the total credit
         public static double GetCreditAmount()
         {
             List<Part> cardList = new List<Part>();
@@ -208,47 +215,7 @@ namespace GasRepairsAndProbablyExpensiveSnacks
 
         }
 
-  /*      public static string GetStatus(int _code)
-        {
-            if (_code == 0)
-            {
-                if (Instance.isWaitingForDelivery)
-                {
-                    return Instance.timeTillDelivery;
-                }
-                else
-                {
-                    return "Awaiting Your Order";
-                }
-            }
-
-            else if (_code == 1)
-            {
-                return "Refuel complete, come again soon!";
-            }
-
-            else if (_code == 2)
-            {
-                return "Partial refuel complete, come again soon!";
-            }
-
-            else if (_code == 3)
-            {
-                return "Cannot recharge - insufficient funds!";
-            }
-
-            else if (_code == 4)
-            {
-                return "All batteries recharged, come again soon!";
-            }
-
-
-
-
-            else return "There has been a problem processing your order. Please contact your card provider.";
-
-        }
-  */
+        // checks if the player has battery capacity available to allow recharge
         public static bool QueryRecharge()
         {
             double batDif = 0;
@@ -275,6 +242,7 @@ namespace GasRepairsAndProbablyExpensiveSnacks
 
         }
 
+        // sends price list to GUI
         public static List<double> ProvidePrices()
         {
             List<double> sendList = new List<double>();
@@ -303,7 +271,7 @@ namespace GasRepairsAndProbablyExpensiveSnacks
             return sendList;
         }
 
-
+        // refuel procedure
         public static int Refuel()
         {
             double _creditAmount = Instance.creditAmount;
@@ -353,19 +321,19 @@ namespace GasRepairsAndProbablyExpensiveSnacks
                 {
                     if (part.Resources.Contains("LiquidFuel"))
                     {
-                        part.Resources.Get("LiquidFuel").amount += (part.Resources.Get("LiquidFuel").maxAmount / 100) * fuelToAdd;
+                        part.Resources.Get("LiquidFuel").amount = (part.Resources.Get("LiquidFuel").maxAmount / 100) * fuelToAdd;
                     }
                     if (part.Resources.Contains("Oxidizer"))
                     {
-                        part.Resources.Get("Oxidizer").amount += (part.Resources.Get("Oxidizer").maxAmount / 100) * fuelToAdd;
+                        part.Resources.Get("Oxidizer").amount = (part.Resources.Get("Oxidizer").maxAmount / 100) * fuelToAdd;
                     }
                     if (part.Resources.Contains("MonoPropellant"))
                     {
-                        part.Resources.Get("MonoPropellant").amount += (part.Resources.Get("MonoPropellant").maxAmount / 100) * fuelToAdd;
+                        part.Resources.Get("MonoPropellant").amount = (part.Resources.Get("MonoPropellant").maxAmount / 100) * fuelToAdd;
                     }
                     if (part.Resources.Contains("XenonGas"))
                     {
-                        part.Resources.Get("XenonGas").amount += (part.Resources.Get("XenonGas").maxAmount / 100) * fuelToAdd;
+                        part.Resources.Get("XenonGas").amount = (part.Resources.Get("XenonGas").maxAmount / 100) * fuelToAdd;
                     }
                 }
 
@@ -376,6 +344,7 @@ namespace GasRepairsAndProbablyExpensiveSnacks
 
         }
 
+        // recharge procedure
         public static int Recharge()
         {
 
@@ -405,9 +374,9 @@ namespace GasRepairsAndProbablyExpensiveSnacks
 
             }
 
-
         }
 
+        // take payment
         public static void TakePayment(double typeToTake)
         {
             if (typeToTake == 0)
@@ -448,9 +417,35 @@ namespace GasRepairsAndProbablyExpensiveSnacks
 
         }
 
-        // not currently implemented
+        // handles timer event after player refuels (simulates waiting for redelivery)
         public static void TimerEvent()
         {
+            // in seconds... useful...
+
+            double thisTime = Planetarium.fetch.time;
+            
+            // a week
+
+            double fixedStdTime = 151200;
+
+            CelestialBody loc = FlightGlobals.ActiveVessel.mainBody;
+            GrapeUtils gU = new GrapeUtils();
+
+            double timeModifier = gU.TimeCalculator(loc.displayName);
+            double revisedTime = fixedStdTime * timeModifier;
+            double timeOfNextDelivery = thisTime + revisedTime;
+            double timeAsDays = Math.Round((timeOfNextDelivery / 21600), 0);
+
+            Instance.timeTillNextDel = timeAsDays;
+            Instance.timerEnd = timeOfNextDelivery;
+
+
+        }
+
+        // sends timer detail to GUI
+        public static double TimerEnd()
+        {
+            return Instance.timerEnd;
         }
 
     }
