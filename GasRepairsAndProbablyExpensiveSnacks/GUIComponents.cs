@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using System.Text;
 using KSP.UI;
@@ -12,6 +13,12 @@ namespace GasRepairsAndProbablyExpensiveSnacks
     [KSPAddon(KSPAddon.Startup.Flight, false)]
     public class GUIComponents : MonoBehaviour
     {
+        [KSPField(isPersistant = true)]
+        public bool isAwaitingDelivery = false;
+
+        [KSPField(isPersistant = true)]
+        public double timerEnd;
+
         // reference the textures
         public Texture grapesTextureOff;
         public Texture grapesTextureOn;
@@ -24,6 +31,8 @@ namespace GasRepairsAndProbablyExpensiveSnacks
 
         // does the button exist?
         public bool btnIsPresent = false;
+
+        public static GUIComponents instance;
 
         // status text holder
         public static string statusStringToReturn = "";
@@ -64,20 +73,24 @@ namespace GasRepairsAndProbablyExpensiveSnacks
         // current prices for location
         private static List<double> rates;
 
-
+       
 
         public void Start()
         {
+
             // get the icons from file, preload menu position, get prices, instantiate the toolbar button & set it's status
 
             if (HighLogic.LoadedSceneIsFlight)
             {
+                instance = this;
+
                 if (grapesBtn != null)
                 {
                     onDestroy();
                     grapesBtn = null;
                 }
 
+                
                 grapesTextureOff = GameDatabase.Instance.GetTexture("FruitKocktail/GRAPES/Icons/grapesoff", false);
                 grapesTextureOn = GameDatabase.Instance.GetTexture("FruitKocktail/GRAPES/Icons/grapeson", false);
                 guiPos = new Rect(menuPR, menuSR);
@@ -245,13 +258,13 @@ namespace GasRepairsAndProbablyExpensiveSnacks
                         closeBtn = false;
                     }
 
-                    if (refuelBtn)
+                    if (refuelBtn && !isAwaitingDelivery)
                     {
                         TryRefuel();
                         refuelBtn = false;
                     }
 
-                    if (rechargeBtn)
+                    if (rechargeBtn && !isAwaitingDelivery)
                     {
                         TryRecharge();
                         rechargeBtn = false;
@@ -362,16 +375,44 @@ namespace GasRepairsAndProbablyExpensiveSnacks
         // method to populate menu status field
         private static string LabelStatus()
         {
-            return statusStringToReturn;
+            if (!instance.isAwaitingDelivery)
+            {
+                return statusStringToReturn;
+            }
+            else
+            {
+                return GetTimeRemaining();
+            }
         }
 
-
-  /*      private static string GetStatus(int _code)
+        private static string GetTimeRemaining()
         {
-            string stringToReturn = GasStation.GetStatus(_code);
-            return stringToReturn;
+            double currentTime = Planetarium.fetch.time;
+            double timeRem = Math.Round((instance.timerEnd - currentTime), 0);
+            double daysRem = Math.Round(timeRem / 21600, 0);
+
+            if (daysRem == 0)
+            {
+                instance.isAwaitingDelivery = false;
+                statusStringToReturn = "Awaiting Your Order";
+                return statusStringToReturn;
+            }
+
+            else if (daysRem == 1)
+            {
+                return "Delivery Due Tomorrow";
+            }
+            
+            else
+            {
+                return "Next Delivery In " + daysRem + " Days";
+            }
+
+
+
+
         }
-  */
+
 
         // gets cost to recharge or n/a if no capacity
         private static string GetRechargeAbility()
@@ -432,7 +473,22 @@ namespace GasRepairsAndProbablyExpensiveSnacks
                 }
 
                 LabelStatus();
+
+                StaticCoroutine.Start(Wait(5));
+                
             }
+        }
+
+       
+
+        public static IEnumerator Wait(float seconds)
+        {
+            yield return new WaitForSeconds(seconds);
+            string timeGet = GasStation.TimeReturn();
+            instance.timerEnd = GasStation.TimerEnd();
+            instance.isAwaitingDelivery = true;
+            //statusStringToReturn = "Next delivery due in " + timeGet + " days";
+            LabelStatus();
         }
 
 

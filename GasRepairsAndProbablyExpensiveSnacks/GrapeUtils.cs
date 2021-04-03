@@ -16,7 +16,8 @@ namespace GasRepairsAndProbablyExpensiveSnacks
         public double DistanceCalculator(string dfs)
         {
             double distanceParam;
-            
+ 
+
             switch (dfs)
             {
                 case "Moho^N":
@@ -100,64 +101,64 @@ namespace GasRepairsAndProbablyExpensiveSnacks
 
         public double TimeCalculator(string dfs)
         {
-            double distanceParam;
+            double timeParam;
 
             switch (dfs)
             {
                 case "Moho^N":
-                    distanceParam = 4.5;
+                    timeParam = 1.5;
                     break;
                 case "Ev^N":
-                    distanceParam = 3;
+                    timeParam = 2.0;
                     break;
                 case "Gilly^N":
-                    distanceParam = 3.5;
+                    timeParam = 1.5;
                     break;
                 case "Duna^N":
-                    distanceParam = 3;
+                    timeParam = 2.0;
                     break;
                 case "Ike^N":
-                    distanceParam = 3;
+                    timeParam = 1.5;
                     break;
                 case "Dres^N":
-                    distanceParam = 3.5;
+                    timeParam = 1.5;
                     break;
                 case "Jool^N":
-                    distanceParam = 4;
+                    timeParam = 3.0;
                     break;
                 case "Laythe^N":
-                    distanceParam = 4.5;
+                    timeParam = 3.0;
                     break;
                 case "Tylo^N":
-                    distanceParam = 4.5;
+                    timeParam = 2.5;
                     break;
                 case "Pol^N":
-                    distanceParam = 4.5;
+                    timeParam = 1.5;
                     break;
                 case "Vall^N":
-                    distanceParam = 4.5;
+                    timeParam = 1.5;
                     break;
                 case "Bop^N":
-                    distanceParam = 4.5;
+                    timeParam = 1.5;
                     break;
                 case "Eeloo^N":
-                    distanceParam = 5;
+                    timeParam = 1.5;
                     break;
                 case "Kerbin^N":
-                    distanceParam = 1.25;
+                    timeParam = 1.5;
                     break;
                 case "Mun^N":
-                    distanceParam = 1.5;
+                    timeParam = 1.5;
                     break;
                 case "Minmus^N":
-                    distanceParam = 1.5;
+                    timeParam = 1.0;
                     break;
                 default:
-                    distanceParam = 6;
+                    timeParam = 6;
                     break;
             }
 
-            return distanceParam;
+            return timeParam;
         }
 
 
