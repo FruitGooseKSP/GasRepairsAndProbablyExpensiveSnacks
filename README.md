@@ -36,7 +36,7 @@ INSTRUCTIONS
   to fill them completely) and the cost will be deducted from your card.
   
 - IMPORTANT: recharging your batteries carries a fixed cost regardless of how much charge you require. There is a safety margin of 1 unit to prevent 
-  spams.
+  accidental spams.
   
 - Once fuel has been delivered, a timer will initialise. This is to reflect the station needing to be refueled from the depot. Much like the price difference,
   the time till delivery is dependant on the planet the station is orbiting, with the idea that some planets are easier to take off from etc whereas others 
