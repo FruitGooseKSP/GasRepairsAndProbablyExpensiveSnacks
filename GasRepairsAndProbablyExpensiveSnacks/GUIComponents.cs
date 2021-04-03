@@ -13,9 +13,11 @@ namespace GasRepairsAndProbablyExpensiveSnacks
     [KSPAddon(KSPAddon.Startup.Flight, false)]
     public class GUIComponents : MonoBehaviour
     {
+        // are we awaiting a delivery?
         [KSPField(isPersistant = true)]
         public bool isAwaitingDelivery = false;
 
+        // when will the delivery happen?
         [KSPField(isPersistant = true)]
         public double timerEnd;
 
@@ -32,6 +34,7 @@ namespace GasRepairsAndProbablyExpensiveSnacks
         // does the button exist?
         public bool btnIsPresent = false;
 
+        // this
         public static GUIComponents instance;
 
         // status text holder
@@ -78,7 +81,7 @@ namespace GasRepairsAndProbablyExpensiveSnacks
         public void Start()
         {
 
-            // get the icons from file, preload menu position, get prices, instantiate the toolbar button & set it's status
+            // get the icons from file, preload menu position, get prices, instantiate the toolbar button & set status'
 
             if (HighLogic.LoadedSceneIsFlight)
             {
@@ -107,10 +110,12 @@ namespace GasRepairsAndProbablyExpensiveSnacks
                 }
                 else grapesBtn.SetFalse();
 
+                if (!isAwaitingDelivery)
+                {
+                    statusStringToReturn = "Awaiting Your Order";
+                }
+
             }
-
-           
-
 
         }
 
@@ -241,8 +246,7 @@ namespace GasRepairsAndProbablyExpensiveSnacks
             GUI.DragWindow();
 
         }
-
-        
+   
         public void Update()
         {
 
@@ -330,14 +334,12 @@ namespace GasRepairsAndProbablyExpensiveSnacks
         // gets cost to fill up in current context
         private static string GetFillUpCost()
         {
-            
             double grabbedPrice = GasStation.GetFuelAmount();
 
             if (grabbedPrice == 0)
             {
                 canRefuel = false;
-                return "All Tanks Full!";
-                
+                return "All Tanks Full!"; 
             }
 
             else
@@ -385,6 +387,7 @@ namespace GasRepairsAndProbablyExpensiveSnacks
             }
         }
 
+        // if waiting for delivery, sets status according to time remaining
         private static string GetTimeRemaining()
         {
             double currentTime = Planetarium.fetch.time;
@@ -407,9 +410,6 @@ namespace GasRepairsAndProbablyExpensiveSnacks
             {
                 return "Next Delivery In " + daysRem + " Days";
             }
-
-
-
 
         }
 
@@ -473,21 +473,18 @@ namespace GasRepairsAndProbablyExpensiveSnacks
                 }
 
                 LabelStatus();
-
                 StaticCoroutine.Start(Wait(5));
                 
             }
         }
 
-       
+       // Coroutine to show delayed status regarding delivery as result of purchasing fuel (i.e. so player sees refuel complete message first)
 
         public static IEnumerator Wait(float seconds)
         {
             yield return new WaitForSeconds(seconds);
-            string timeGet = GasStation.TimeReturn();
             instance.timerEnd = GasStation.TimerEnd();
             instance.isAwaitingDelivery = true;
-            //statusStringToReturn = "Next delivery due in " + timeGet + " days";
             LabelStatus();
         }
 

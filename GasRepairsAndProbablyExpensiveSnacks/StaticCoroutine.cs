@@ -5,55 +5,68 @@ namespace GasRepairsAndProbablyExpensiveSnacks
 {
     public class StaticCoroutine : MonoBehaviour
     {
-        // a script borrowed (posted for anyone to use) from the Unity Forum by CykesDev which allows Coroutines to be called inside static methods, which you can't 
-        // normally do. Top work Sir!
+        // A custom class that allows execution of a Coroutine within a static method, something you're normally not allowed to do
 
-        private static StaticCoroutine m_instance;
+        // this
+        private static StaticCoroutine instance;
 
-        // OnDestroy is called when the MonoBehaviour will be destroyed.
-        // Coroutines are not stopped when a MonoBehaviour is disabled, but only when it is definitely destroyed.
+        // when destroyed (as Unity doesn't stop coroutines until they are physically destroyed)
         private void OnDestroy()
-        { m_instance.StopAllCoroutines(); }
+        { 
+            instance.StopAllCoroutines(); 
+        }
 
-        // OnApplicationQuit is called on all game objects before the application is closed.
-        // In the editor it is called when the user stops playmode.
+        // not applicable for KSP but left for reference
         private void OnApplicationQuit()
-        { m_instance.StopAllCoroutines(); }
+        { 
+            instance.StopAllCoroutines(); 
+        }
 
-        // Build will attempt to retrieve the class-wide instance, returning it when available.
-        // If no instance exists, attempt to find another StaticCoroutine that exists.
-        // If no StaticCoroutines are present, create a dedicated StaticCoroutine object.
+        // Coroutine creator, searches for existing, then creates new static instance if none found
         private static StaticCoroutine Build()
         {
-            if (m_instance != null)
-            { return m_instance; }
+            if (instance != null)
+            { 
+                return instance; 
+            }
 
-            m_instance = (StaticCoroutine)FindObjectOfType(typeof(StaticCoroutine));
+            instance = (StaticCoroutine)FindObjectOfType(typeof(StaticCoroutine));
 
-            if (m_instance != null)
-            { return m_instance; }
+            if (instance != null)
+            { 
+                return instance; 
+            }
 
             GameObject instanceObject = new GameObject("StaticCoroutine");
             instanceObject.AddComponent<StaticCoroutine>();
-            m_instance = instanceObject.GetComponent<StaticCoroutine>();
+            instance = instanceObject.GetComponent<StaticCoroutine>();
 
-            if (m_instance != null)
-            { return m_instance; }
+            if (instance != null)
+            { 
+                return instance; 
+            }
 
             Debug.LogError("Build did not generate a replacement instance. Method Failed!");
 
             return null;
         }
 
-        // Overloaded Static Coroutine Methods which use Unity's default Coroutines.
-        // Polymorphism applied for best compatibility with the standard engine.
+        // start the coroutine
         public static void Start(string methodName)
-        { Build().StartCoroutine(methodName); }
-        public static void Start(string methodName, object value)
-        { Build().StartCoroutine(methodName, value); }
-        public static void Start(IEnumerator routine)
-        { Build().StartCoroutine(routine); }
+        { 
+            Build().StartCoroutine(methodName); 
+        }
 
+        public static void Start(string methodName, object value)
+        { 
+            Build().StartCoroutine(methodName, value); 
+        }
+
+        public static void Start(IEnumerator routine)
+        { 
+            Build().StartCoroutine(routine); 
+        }
+       
 
 
 

@@ -14,7 +14,7 @@ namespace GasRepairsAndProbablyExpensiveSnacks
 
         [KSPField(guiActive = true, guiActiveEditor = true, isPersistant = true, guiName = "Available Credit", guiUnits = "k$"
             , guiFormat = "F2")]
-        public double availableCredit = 1000;
+        public double availableCredit;
 
 
     }

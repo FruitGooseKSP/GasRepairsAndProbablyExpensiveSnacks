@@ -13,6 +13,7 @@ namespace GasRepairsAndProbablyExpensiveSnacks
         {
         }
 
+        // distance modifier
         public double DistanceCalculator(string dfs)
         {
             double distanceParam;
@@ -77,7 +78,7 @@ namespace GasRepairsAndProbablyExpensiveSnacks
         }
 
 
-
+        // base cost of fuels etc
         public List<double> BaseRates()
         {
             List<double> baseList = new List<double>();
@@ -99,6 +100,7 @@ namespace GasRepairsAndProbablyExpensiveSnacks
 
         }
 
+        // time for delivery modifier
         public double TimeCalculator(string dfs)
         {
             double timeParam;

@@ -111,6 +111,7 @@ namespace GasRepairsAndProbablyExpensiveSnacks
             }
         }
 
+        // calculates how much fuel the player 'needs'
         public static double GetFuelAmount()
         {
             Instance.lfDif = 0;
@@ -173,6 +174,7 @@ namespace GasRepairsAndProbablyExpensiveSnacks
 
         }
 
+        // get the total credit
         public static double GetCreditAmount()
         {
             List<Part> cardList = new List<Part>();
@@ -213,7 +215,7 @@ namespace GasRepairsAndProbablyExpensiveSnacks
 
         }
 
- 
+        // checks if the player has battery capacity available to allow recharge
         public static bool QueryRecharge()
         {
             double batDif = 0;
@@ -240,6 +242,7 @@ namespace GasRepairsAndProbablyExpensiveSnacks
 
         }
 
+        // sends price list to GUI
         public static List<double> ProvidePrices()
         {
             List<double> sendList = new List<double>();
@@ -268,7 +271,7 @@ namespace GasRepairsAndProbablyExpensiveSnacks
             return sendList;
         }
 
-
+        // refuel procedure
         public static int Refuel()
         {
             double _creditAmount = Instance.creditAmount;
@@ -341,6 +344,7 @@ namespace GasRepairsAndProbablyExpensiveSnacks
 
         }
 
+        // recharge procedure
         public static int Recharge()
         {
 
@@ -370,9 +374,9 @@ namespace GasRepairsAndProbablyExpensiveSnacks
 
             }
 
-
         }
 
+        // take payment
         public static void TakePayment(double typeToTake)
         {
             if (typeToTake == 0)
@@ -413,7 +417,7 @@ namespace GasRepairsAndProbablyExpensiveSnacks
 
         }
 
-        // beta
+        // handles timer event after player refuels (simulates waiting for redelivery)
         public static void TimerEvent()
         {
             // in seconds... useful...
@@ -438,11 +442,7 @@ namespace GasRepairsAndProbablyExpensiveSnacks
 
         }
 
-        public static string TimeReturn()
-        {
-            return Instance.timeTillNextDel.ToString();
-        }
-
+        // sends timer detail to GUI
         public static double TimerEnd()
         {
             return Instance.timerEnd;
