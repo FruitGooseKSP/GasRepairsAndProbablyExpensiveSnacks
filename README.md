@@ -11,7 +11,7 @@ The "sign", which can be attached to anything, gives the player the option of de
 using stock parts for example. The sign in effect "takes over" whatever it's attached to, allowing it to become a location for purchasing fuel.
 
 The fuel card is carried on the player vessel and holds credit which is used to purchase fuel. When a purchase is made, the funds are taken off the card,
-causing the player to use multiple cards or to plan refuelling accordingly. The fuel card holds 1000 K$. 
+causing the player to use multiple cards or to plan refuelling accordingly. The fuel card holds 1000 K$ by default but can be edited in the .CFG file. 
 
 The price of fuel/services varies according to where the station is at present, to reflect the transportation costs of the fuel. For example, near Kerbin 
 the cost is close to stock (with a small commission added!) whereas, by Eeloo, the cost is significantly higher. Add on planets default at the highest 
@@ -23,7 +23,7 @@ INSTRUCTIONS
   mechanics of the mod are such that the station doesn't have to physically be able to hold the fuel you may require. As an example, you could have a 
   docking port with the Sign attached and it'll work. It's up to the player how they wish to design their delivery means.
   
-- Add your station into orbit at your preferred location.
+- Add your station into orbit at your preferred location. I usually cheat it into position using the Alt-F12 menu or something like Hyperedit.
 
 - Launch your vessel, ensuring you have a fuel card attached to it!
 
@@ -35,11 +35,18 @@ INSTRUCTIONS
 - Assuming all goes to plan (ie you have enough credit!) your tanks will now be full if you chose Refuel (or part full if you have insufficient credit 
   to fill them completely) and the cost will be deducted from your card.
   
-- IMPORTANT: recharging your batteries carries a fixed cost regardless of how much charge you require. Therefore, under normal circumstances, spamming 
-  the recharge button will cause you to be charged for each press!
+- IMPORTANT: recharging your batteries carries a fixed cost regardless of how much charge you require. There is a safety margin of 1 unit to prevent 
+  spams.
   
-- Although not implemented in this version, there is provision for a time limit to be added between refueling to take into account delivery of the fuel to
-  the station (for balancing purposes). 
+- Once fuel has been delivered, a timer will initialise. This is to reflect the station needing to be refueled from the depot. Much like the price difference,
+  the time till delivery is dependant on the planet the station is orbiting, with the idea that some planets are easier to take off from etc whereas others 
+  are very difficult or require coming from another planet/moon. The time left will be displayed in the status on the menu.
+  
+
+FUTURE DEVELOPMENTS?
+
+I plan to add the requirement to have a mining facility on the planet the station orbits. The mod will function exactly the same but gives the player a reason to
+ visit a planet. More to follow in the future...
 
 
 LICENCE
