@@ -3,7 +3,8 @@
 DESCRIPTION
 
 This mod attempts to address the issues associated with refuelling in orbit by providing a means to 'purchase' fuel from a fictional 3rd party vendor,
-without having to worry about mining and transferring fuel endlessly.
+without having to worry about mining and transferring fuel endlessly. This mod is based heavily on the style of "player choice" where most of the 
+design decisions are handed over to the player to allow for a true custom experience.
 
 The mod contains 2 parts; a sign and a fuel card. 
 
@@ -17,11 +18,14 @@ The price of fuel/services varies according to where the station is at present, 
 the cost is close to stock (with a small commission added!) whereas, by Eeloo, the cost is significantly higher. Add on planets default at the highest 
 cost modifier; custom prices for common planet packs may be added in the future.
 
+After fuel is purchased, a timer initialises which prevents the player from purchasing fuel again until the timer has ended. The timer is also based on the 
+location of the station, again it'll take longer to deliver fuel to harder to reach places.
+
 INSTRUCTIONS
 
 - Design and build a station (with a docking port) that your vessel can attach to. When happy, attach the "Sign" to your station. Please note that the 
   mechanics of the mod are such that the station doesn't have to physically be able to hold the fuel you may require. As an example, you could have a 
-  docking port with the Sign attached and it'll work. It's up to the player how they wish to design their delivery means.
+  docking port with the Sign attached and it'll work. It's up to the player how they wish to design their delivery means; realistic or otherwise.
   
 - Add your station into orbit at your preferred location, by either transporting it yourself or cheating it with Alt-F12.
 
@@ -39,8 +43,8 @@ INSTRUCTIONS
   accidental spams.
   
 - Once fuel has been delivered, a timer will initialise. This is to reflect the station needing to be refueled from the depot. Much like the price difference,
-  the time till delivery is dependant on the planet the station is orbiting, with the idea that some planets are easier to take off from etc whereas others 
-  are very difficult or require coming from another planet/moon. The time left will be displayed in the status on the menu.
+  the time till delivery is dependant on the planet the station is orbiting. The timer, although accurate is not an "exact science". Sometimes there will be 
+  unforeseen delays which will hold up redelivery. 
   
 
 FUTURE DEVELOPMENTS?
