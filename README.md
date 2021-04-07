@@ -11,7 +11,7 @@ The "sign", which can be attached to anything, gives the player the option of de
 using stock parts for example. The sign in effect "takes over" whatever it's attached to, allowing it to become a location for purchasing fuel.
 
 The fuel card is carried on the player vessel and holds credit which is used to purchase fuel. When a purchase is made, the funds are taken off the card,
-causing the player to use multiple cards or to plan refuelling accordingly. The fuel card holds 1000 K$ by default but can be edited in the .CFG file. 
+causing the player to use multiple cards or to plan refuelling accordingly. The fuel card holds 1000 K$ by default.
 
 The price of fuel/services varies according to where the station is at present, to reflect the transportation costs of the fuel. For example, near Kerbin 
 the cost is close to stock (with a small commission added!) whereas, by Eeloo, the cost is significantly higher. Add on planets default at the highest 
@@ -45,7 +45,7 @@ INSTRUCTIONS
 
 FUTURE DEVELOPMENTS?
 
-I plan to add the requirement to have a mining facility on the planet the station orbits. The mod will function exactly the same but gives the player a reason to
+The requirement to have a mining facility on the planet the station orbits. The mod will function exactly the same but gives the player a reason to
  visit a planet. More to follow in the future...
 
 
