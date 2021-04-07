@@ -23,7 +23,7 @@ INSTRUCTIONS
   mechanics of the mod are such that the station doesn't have to physically be able to hold the fuel you may require. As an example, you could have a 
   docking port with the Sign attached and it'll work. It's up to the player how they wish to design their delivery means.
   
-- Add your station into orbit at your preferred location. I usually cheat it into position using the Alt-F12 menu or something like Hyperedit.
+- Add your station into orbit at your preferred location, by either transporting it yourself or cheating it with Alt-F12.
 
 - Launch your vessel, ensuring you have a fuel card attached to it!
 
@@ -45,8 +45,8 @@ INSTRUCTIONS
 
 FUTURE DEVELOPMENTS?
 
-The requirement to have a mining facility on the planet the station orbits. The mod will function exactly the same but gives the player a reason to
- visit a planet. More to follow in the future...
+The requirement to have a mining facility on the planet the station orbits? The mod would function exactly the same but gives the player a reason to
+ visit a planet. Maybe more to follow in the future...
 
 
 LICENCE
