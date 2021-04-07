@@ -64,6 +64,8 @@ namespace GasRepairsAndProbablyExpensiveSnacks
         // are we at a fuel station?
         public static bool atStation;
 
+        public static bool inOrbit;
+
         // menu position reference ie in the middle of the screen
         private Vector2 menuPR = new Vector2((Screen.width / 2) - 200, (Screen.height / 2) - 237);
 
@@ -126,6 +128,7 @@ namespace GasRepairsAndProbablyExpensiveSnacks
             // instantiate the menu if we're at a refueling station
 
             atStation = false;
+            inOrbit = false;
 
             foreach (var part in FlightGlobals.ActiveVessel.Parts)
             {
@@ -135,7 +138,12 @@ namespace GasRepairsAndProbablyExpensiveSnacks
                 }
             }
 
-            if (atStation)
+            if (FlightGlobals.ActiveVessel.situation == Vessel.Situations.ORBITING)
+            {
+                inOrbit = true;
+            }
+
+            if (atStation && inOrbit)
             {
                 // instantiate the menu
                 guiPos = GUILayout.Window(123456, guiPos, MenuWindow,
@@ -143,6 +151,15 @@ namespace GasRepairsAndProbablyExpensiveSnacks
                 grapesBtn.SetTrue();
 
             }
+
+            else if (!inOrbit)
+            {
+                ScreenMessage screenMessage = new ScreenMessage("You are not in orbit!", 3F, ScreenMessageStyle.UPPER_CENTER);
+                ScreenMessages.PostScreenMessage(screenMessage);
+                grapesBtn.SetFalse();
+            }
+
+           
 
         }
 
