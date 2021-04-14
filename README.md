@@ -15,7 +15,7 @@ The fuel card is carried on the player vessel and holds credit which is used to 
 causing the player to use multiple cards or to plan refuelling accordingly. The fuel card holds 1000 K$ by default.
 
 The price of fuel/services varies according to where the station is at present, to reflect the transportation costs of the fuel. For example, near Kerbin 
-the cost is close to stock (with a small commission added!) whereas, by Eeloo, the cost is significantly higher. Add on planets default at the highest 
+the cost is close to stock (with a small commission added!) whereas by Eeloo, the cost is significantly higher. Add-on planets default at the highest 
 cost modifier; custom prices for common planet packs may be added in the future.
 
 After fuel is purchased, a timer initialises which prevents the player from purchasing fuel again until the timer has ended. The timer is also based on the 
@@ -24,10 +24,9 @@ location of the station, again it'll take longer to deliver fuel to harder to re
 INSTRUCTIONS
 
 - Design and build a station (with a docking port) that your vessel can attach to. When happy, attach the "Sign" to your station. Please note that the 
-  mechanics of the mod are such that the station doesn't have to physically be able to hold the fuel you may require. As an example, you could have a 
-  docking port with the Sign attached and it'll work. It's up to the player how they wish to design their delivery means; realistic or otherwise.
+  mechanics of the mod are such that the station doesn't have to physically be able to hold the fuel you may require; it's up to the player how they wish to design their           delivery means; realistic or otherwise.
   
-- Add your station into orbit at your preferred location, by either transporting it yourself or cheating it with Alt-F12.
+- Add your station into orbit at your preferred location, by either transporting it yourself or cheating it with Alt-F12, again player choice.
 
 - Launch your vessel, ensuring you have a fuel card attached to it!
 
@@ -46,11 +45,6 @@ INSTRUCTIONS
   the time till delivery is dependant on the planet the station is orbiting. The timer, although accurate is not an "exact science". Sometimes there will be 
   unforeseen delays which will hold up redelivery. 
   
-
-FUTURE DEVELOPMENTS?
-
-The requirement to have a mining facility on the planet the station orbits? The mod would function exactly the same but gives the player a reason to
- visit a planet. Maybe more to follow in the future...
 
 
 LICENCE
