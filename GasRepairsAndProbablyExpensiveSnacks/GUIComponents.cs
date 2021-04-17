@@ -10,7 +10,7 @@ using UnityEngine.UI;
 
 namespace GasRepairsAndProbablyExpensiveSnacks
 {
-    [KSPAddon(KSPAddon.Startup.Flight, false)]
+    [KSPAddon(KSPAddon.Startup.EveryScene, false)]
     public class GUIComponents : MonoBehaviour
     {
         // are we awaiting a delivery?
@@ -117,6 +117,16 @@ namespace GasRepairsAndProbablyExpensiveSnacks
                     statusStringToReturn = "Awaiting Your Order";
                 }
 
+            }
+
+            else
+            {
+                if (grapesBtn != null)
+                {
+                    onDestroy();
+                    grapesBtn = null;
+                    btnIsPresent = false;
+                }
             }
 
         }
@@ -290,6 +300,15 @@ namespace GasRepairsAndProbablyExpensiveSnacks
                         TryRecharge();
                         rechargeBtn = false;
                     }
+                }
+            }
+           else
+            {
+                if (grapesBtn != null)
+                {
+                    onDestroy();
+                    grapesBtn = null;
+                    btnIsPresent = false;
                 }
             }
         }
